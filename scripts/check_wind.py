@@ -114,7 +114,8 @@ def main(argv):
               file=sys.stderr)
         return 2
 
-    cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+    # utf-8-sig: tollera il BOM che Notepad/PowerShell aggiungono su Windows
+    cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8-sig"))
     server = os.environ.get("NTFY_SERVER", cfg["ntfy"]["server"])
     state_file = os.environ.get("STATE_FILE", str(ROOT / ".state" / "notified.json"))
     now_iso = datetime.now().strftime("%Y-%m-%dT%H:%M")

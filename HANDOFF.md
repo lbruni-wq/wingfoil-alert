@@ -12,10 +12,16 @@ File di ripresa: se la sessione si interrompe, riparti da qui.
 - [x] Piano di implementazione (docs/superpowers/plans/2026-07-27-wingfoil-alert-plan.md)
 - [x] Task 1 — config.json + windlogic.py + test (7 test verdi)
 - [x] Task 2 — check_wind.py (fetch, dedup, ntfy, dry-run) + test (15 test verdi, dry-run reale OK)
-- [ ] Task 2 — PWA (index/app/style/sw/manifest/icone)
-- [ ] Task 3 — GitHub Actions (wind-alert.yml + pages.yml) + README
-- [ ] Verifica finale (test, dry-run, PWA nel browser)
-- [ ] Deploy (RICHIEDE LUIGI: nome account GitHub personale, creazione repo pubblico, secret NTFY_TOPIC)
+- [x] Task 3 — PWA (index/app/style/windlogic.js, dashboard verificata in browser: card, meteogramma, dialog impostazioni OK, zero errori console)
+- [x] Task 4 — manifest, service worker (cache wingfoil-v1 attiva), icone generate
+- [x] Task 5 — GitHub Actions (wind-alert.yml cron 3h + pages.yml) + README con guida deploy
+- [x] Verifica finale — 16/16 test verdi; dry-run end-to-end con soglia abbassata genera i messaggi giusti; fix BOM (utf-8-sig)
+- [ ] Deploy (RICHIEDE LUIGI — unico passo rimasto, ~10 min, guida in README.md):
+      1. `gh repo create wingfoil-alert --public --source . --push` dall'account personale scelto
+      2. Settings → Pages → Source "GitHub Actions"
+      3. `gh secret set NTFY_TOPIC --body "<topic segreto>"`
+      4. Tablet: app ntfy sottoscritta al topic + PWA da URL Pages "Aggiungi a schermata Home"
+      5. Test: Actions → Wind alert → Run workflow
 
 ## Decisioni chiave (non rimetterle in discussione)
 
