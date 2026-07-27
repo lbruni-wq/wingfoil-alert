@@ -21,9 +21,11 @@ File di ripresa: se la sessione si interrompe, riparti da qui.
       2. Pages attivo (build via Actions): https://lbruni-wq.github.io/wingfoil-alert/ (HTTP 200)
       3. Secret NTFY_TOPIC impostato (topic segreto NON nel repo — comunicato a Luigi in chat)
       4. Run di test Wind alert: SUCCESS — fetch Open-Meteo OK, "nessuna finestra utile nelle 48h", 0 notifiche, cache dedup salvata
-- [ ] Smartphone (RICHIEDE LUIGI, ~5 min):
-      1. App ntfy (Play Store / App Store) → sottoscrivi il topic segreto
-      2. Apri https://lbruni-wq.github.io/wingfoil-alert/ → menu browser → "Aggiungi a schermata Home"
+- [x] Smartphone (2026-07-27):
+      1. App ntfy sottoscritta al topic segreto — notifica di test inviata e RICEVUTA da Luigi
+      2. PWA: https://lbruni-wq.github.io/wingfoil-alert/ → "Aggiungi a schermata Home" (a discrezione di Luigi)
+
+**PROGETTO CHIUSO** — sistema in produzione, cron ogni 3h attivo. Deciso: repo resta pubblico (Pages free); il topic ntfy è l'unico segreto.
 
 ## Decisioni chiave (non rimetterle in discussione)
 
