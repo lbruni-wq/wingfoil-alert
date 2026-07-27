@@ -16,12 +16,14 @@ File di ripresa: se la sessione si interrompe, riparti da qui.
 - [x] Task 4 — manifest, service worker (cache wingfoil-v1 attiva), icone generate
 - [x] Task 5 — GitHub Actions (wind-alert.yml cron 3h + pages.yml) + README con guida deploy
 - [x] Verifica finale — 16/16 test verdi; dry-run end-to-end con soglia abbassata genera i messaggi giusti; fix BOM (utf-8-sig)
-- [ ] Deploy (RICHIEDE LUIGI — unico passo rimasto, ~10 min, guida in README.md):
-      1. `gh repo create wingfoil-alert --public --source . --push` dall'account personale scelto
-      2. Settings → Pages → Source "GitHub Actions"
-      3. `gh secret set NTFY_TOPIC --body "<topic segreto>"`
-      4. Tablet: app ntfy sottoscritta al topic + PWA da URL Pages "Aggiungi a schermata Home"
-      5. Test: Actions → Wind alert → Run workflow
+- [x] Deploy (2026-07-27, account lbruni-wq):
+      1. Repo pubblico: https://github.com/lbruni-wq/wingfoil-alert
+      2. Pages attivo (build via Actions): https://lbruni-wq.github.io/wingfoil-alert/ (HTTP 200)
+      3. Secret NTFY_TOPIC impostato (topic segreto NON nel repo — comunicato a Luigi in chat)
+      4. Run di test Wind alert: SUCCESS — fetch Open-Meteo OK, "nessuna finestra utile nelle 48h", 0 notifiche, cache dedup salvata
+- [ ] Smartphone (RICHIEDE LUIGI, ~5 min):
+      1. App ntfy (Play Store / App Store) → sottoscrivi il topic segreto
+      2. Apri https://lbruni-wq.github.io/wingfoil-alert/ → menu browser → "Aggiungi a schermata Home"
 
 ## Decisioni chiave (non rimetterle in discussione)
 

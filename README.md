@@ -1,6 +1,6 @@
 # 🪁 WingFoil Alert
 
-PWA per tablet che mostra le previsioni vento per gli spot wing foil
+PWA per smartphone che mostra le previsioni vento per gli spot wing foil
 (Cupra Marittima e Grottammare) e manda una notifica push quando c'è una
 **finestra buona**: almeno N ore consecutive con vento sopra soglia e
 direzione giusta, nella fascia oraria utile.
@@ -9,7 +9,7 @@ direzione giusta, nella fascia oraria utile.
   (AROME ~1,3 km / ARPEGE, gli stessi di nucleoventonda), unità nodi.
 - **Dashboard:** app statica installabile (GitHub Pages), funziona anche offline.
 - **Alert:** GitHub Actions ogni 3 ore → push via [ntfy.sh](https://ntfy.sh)
-  (arriva anche a tablet in standby, con l'app ntfy installata).
+  (arriva anche a telefono in standby, con l'app ntfy installata).
 
 ## Struttura
 
@@ -55,12 +55,12 @@ python -m http.server 8765                # poi apri http://localhost:8765
    ⚠️ Il topic È la password: chi lo conosce può leggere/mandare notifiche.
    Non scriverlo mai nel codice (il repo è pubblico).
 
-4. **Tablet**:
-   - installa **ntfy** dal Play Store → ➕ → sottoscrivi il topic;
-   - apri l'URL Pages in Chrome → menu ⋮ → **Aggiungi a schermata Home**.
+4. **Smartphone**:
+   - installa **ntfy** (Play Store / App Store) → ➕ → sottoscrivi il topic;
+   - apri l'URL Pages nel browser → menu → **Aggiungi a schermata Home**.
 
 5. **Test**: tab Actions → *Wind alert* → **Run workflow**. Se in questo momento
-   c'è una finestra buona nelle prossime 48h arriva la notifica sul tablet.
+   c'è una finestra buona nelle prossime 48h arriva la notifica sul telefono.
 
 ## Modificare spot e regole
 
