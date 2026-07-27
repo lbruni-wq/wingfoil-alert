@@ -10,7 +10,8 @@ File di ripresa: se la sessione si interrompe, riparti da qui.
 - [x] Design approvato da Luigi (2026-07-27)
 - [x] Spec scritta e committata
 - [x] Piano di implementazione (docs/superpowers/plans/2026-07-27-wingfoil-alert-plan.md)
-- [ ] Task 1 — config.json + scripts/check_wind.py + test
+- [x] Task 1 — config.json + windlogic.py + test (7 test verdi)
+- [x] Task 2 — check_wind.py (fetch, dedup, ntfy, dry-run) + test (15 test verdi, dry-run reale OK)
 - [ ] Task 2 — PWA (index/app/style/sw/manifest/icone)
 - [ ] Task 3 — GitHub Actions (wind-alert.yml + pages.yml) + README
 - [ ] Verifica finale (test, dry-run, PWA nel browser)
