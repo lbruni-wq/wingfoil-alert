@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1220">
+  <title>WingFoil Alert</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🪁 WingFoil Alert</h1>
+    <div class="header-right">
+      <span id="last-update" class="muted"></span>
+      <button id="btn-add" class="icon-btn" title="Aggiungi spot">➕</button>
+    </div>
+  </header>
+
+  <div id="offline-banner" class="banner hidden"></div>
+
+  <main id="cards"></main>
+
+  <footer>
+    <button id="btn-export" class="ghost-btn">⬇ Esporta config.json</button>
+    <p class="muted small">Per aggiornare gli alert push, committa il config.json
+      esportato nel repository GitHub.</p>
+  </footer>
+
+  <!-- Impostazioni spot -->
+  <dialog id="dlg-settings">
+    <form method="dialog">
+      <h2 id="set-title">Impostazioni</h2>
+
+      <label class="row">
+        <span>Spot attivo</span>
+        <input type="checkbox" id="set-enabled">
+      </label>
+
+      <label>Soglia vento: <strong><span id="set-knots-value">12</span> kn</strong>
+        <input type="range" id="set-knots" min="8" max="25" step="1">
+      </label>
+
+      <fieldset>
+        <legend>Direzioni valide</legend>
+        <div class="wind-rose">
+          <label><input type="checkbox" value="NW"><span>NW</span></label>
+          <label><input type="checkbox" value="N"><span>N</span></label>
+          <label><input type="checkbox" value="NE"><span>NE</span></label>
+          <label><input type="checkbox" value="W"><span>W</span></label>
+          <span class="rose-center">🧭</span>
+          <label><input type="checkbox" value="E"><span>E</span></label>
+          <label><input type="checkbox" value="SW"><span>SW</span></label>
+          <label><input type="checkbox" value="S"><span>S</span></label>
+          <label><input type="checkbox" value="SE"><span>SE</span></label>
+        </div>
+      </fieldset>
+
+      <div class="two-cols">
+        <label>Dalle
+          <select id="set-day-start"></select>
+        </label>
+        <label>Alle
+          <select id="set-day-end"></select>
+        </label>
+      </div>
+
+      <label>Durata minima finestra
+        <select id="set-min-hours">
+          <option value="1">1 ora</option>
+          <option value="2">2 ore</option>
+          <option value="3">3 ore</option>
+          <option value="4">4 ore</option>
+        </select>
+      </label>
+
+      <div class="dlg-actions">
+        <button type="button" id="set-delete" class="danger-btn">Elimina spot</button>
+        <span class="spacer"></span>
+        <button value="cancel" class="ghost-btn">Annulla</button>
+        <button type="button" id="set-save" class="primary-btn">Salva</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Aggiungi spot -->
+  <dialog id="dlg-add">
+    <form method="dialog">
+      <h2>Aggiungi spot</h2>
+      <label>Cerca località
+        <input type="search" id="add-query" placeholder="es. Civitanova Marche"
+               autocomplete="off">
+      </label>
+      <ul id="add-results"></ul>
+      <div class="dlg-actions">
+        <span class="spacer"></span>
+        <button value="cancel" class="ghost-btn">Chiudi</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="windlogic.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
