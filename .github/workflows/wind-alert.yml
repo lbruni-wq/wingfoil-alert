@@ -1,0 +1,28 @@
+name: Wind alert
+
+on:
+  schedule:
+    # 06:15–21:15 ora italiana (estate); in inverno slitta di 1h, va bene lo stesso
+    - cron: "15 4,7,10,13,16,19 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ripristina l'ultimo stato dedup e salva sempre quello nuovo
+      - uses: actions/cache@v4
+        with:
+          path: .state
+          key: wind-state-${{ github.run_id }}
+          restore-keys: wind-state-
+
+      - name: Controlla previsioni e notifica
+        run: python scripts/check_wind.py
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
