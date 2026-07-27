@@ -1,0 +1,36 @@
+{
+  "spots": [
+    {
+      "id": "cupra",
+      "name": "Cupra Marittima",
+      "lat": 43.024,
+      "lon": 13.861,
+      "enabled": true,
+      "min_knots": 12,
+      "sectors": ["N", "NE", "E", "SE"],
+      "day_start": 8,
+      "day_end": 20,
+      "min_hours": 2
+    },
+    {
+      "id": "grottammare",
+      "name": "Grottammare",
+      "lat": 42.989,
+      "lon": 13.87,
+      "enabled": true,
+      "min_knots": 12,
+      "sectors": ["N", "NE", "E", "SE"],
+      "day_start": 8,
+      "day_end": 20,
+      "min_hours": 2
+    }
+  ],
+  "forecast": {
+    "model": "meteofrance_seamless",
+    "alert_hours": 48,
+    "display_hours": 72
+  },
+  "ntfy": {
+    "server": "https://ntfy.sh"
+  }
+}
