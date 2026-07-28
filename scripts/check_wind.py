@@ -4,10 +4,16 @@ Uso:
     python scripts/check_wind.py [--dry-run]
 
 Env:
-    NTFY_TOPIC   topic ntfy segreto (obbligatorio senza --dry-run)
+    NTFY_TOPIC   topic ntfy segreti, uno o piu' separati da virgola — un canale
+                 per persona, cosi' si revoca il topic di uno senza toccare gli
+                 altri (obbligatorio senza --dry-run)
     NTFY_SERVER  default: valore in config.json (https://ntfy.sh)
     STATE_FILE   default: .state/notified.json (dedup: 1 notifica per spot
-                 per giorno di finestra, pruning dopo 7 giorni)
+                 per giorno di finestra PER TOPIC, pruning dopo 7 giorni)
+
+I topic non vengono mai stampati: i log delle Actions di un repo pubblico sono
+pubblici, e il topic e' la password del canale. Nei messaggi compare solo la
+posizione nella lista (#1, #2, ...).
 
 Solo stdlib. In caso di errore API lo spot viene saltato senza notifiche
 false e lo script esce comunque con 0.
@@ -70,8 +76,15 @@ def format_message(spot_name, w):
     return f"{spot_name}: {giorno} {start.hour}–{end.hour} · {kn} da {da}"
 
 
-def dedup_key(spot_id, w):
-    return f"{spot_id}|{w['start'][:10]}"
+def parse_topics(raw):
+    """"topicA, topicB" -> ["topicA", "topicB"]. Uno solo resta il caso normale."""
+    return [t.strip() for t in raw.split(",") if t.strip()]
+
+
+def dedup_key(spot_id, w, topic=None):
+    """Senza topic: chiave storica (stato scritto prima del multi-topic)."""
+    base = f"{spot_id}|{w['start'][:10]}"
+    return base if topic is None else f"{base}|{topic}"
 
 
 def load_state(path, now_iso):
@@ -108,11 +121,13 @@ def send_ntfy(server, topic, spot_name, message):
 
 def main(argv):
     dry_run = "--dry-run" in argv
-    topic = os.environ.get("NTFY_TOPIC", "")
-    if not dry_run and not topic:
+    topics = parse_topics(os.environ.get("NTFY_TOPIC", ""))
+    if not dry_run and not topics:
         print("Errore: NTFY_TOPIC non impostata (oppure usa --dry-run).",
               file=sys.stderr)
         return 2
+    if dry_run and not topics:
+        topics = ["(dry-run)"]  # un solo destinatario finto, per stampare
 
     # utf-8-sig: tollera il BOM che Notepad/PowerShell aggiungono su Windows
     cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8-sig"))
@@ -139,21 +154,26 @@ def main(argv):
         windows = find_windows(horizon, spot)
         for w in windows:
             msg = format_message(spot["name"], w)
-            key = dedup_key(spot["id"], w)
-            if key in state:
-                print(f"(già notificato) {msg}")
-                continue
-            if dry_run:
-                print(f"[dry-run] {msg}")
-            else:
+            # un destinatario alla volta: se il primo topic e' gia' stato
+            # avvisato e il secondo no (topic aggiunto oggi), il secondo riceve.
+            for i, topic in enumerate(topics, start=1):
+                key = dedup_key(spot["id"], w, topic)
+                # stato scritto prima del multi-topic: valeva per il 1o topic
+                legacy_seen = i == 1 and dedup_key(spot["id"], w) in state
+                if key in state or legacy_seen:
+                    print(f"(già notificato #{i}) {msg}")
+                    continue
+                if dry_run:
+                    print(f"[dry-run #{i}] {msg}")
+                    continue
                 try:
                     send_ntfy(server, topic, spot["name"], msg)
                 except Exception as e:
-                    print(f"AVVISO: invio ntfy fallito: {e}", file=sys.stderr)
+                    print(f"AVVISO: invio ntfy #{i} fallito: {e}", file=sys.stderr)
                     continue
                 state[key] = now_iso
                 notified += 1
-                print(f"[notificato] {msg}")
+                print(f"[notificato #{i}] {msg}")
         if not windows:
             print(f"{spot['name']}: nessuna finestra utile nelle "
                   f"{cfg['forecast']['alert_hours']}h.")

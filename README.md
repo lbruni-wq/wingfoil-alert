@@ -89,8 +89,23 @@ python -m http.server 8765                # poi apri http://localhost:8765
    gh secret set NTFY_TOPIC --body "wingfoil-luigi-x7k2m9"
    ```
 
-   ⚠️ Il topic È la password: chi lo conosce può leggere/mandare notifiche.
-   Non scriverlo mai nel codice (il repo è pubblico).
+   ⚠️ Il topic È la password: chi lo conosce può leggere le notifiche **e
+   mandarne di false** (anche con link cliccabili). Non scriverlo mai nel codice
+   né stamparlo nei log: il repo è pubblico, e lo sono anche i log delle Actions.
+
+   **Un canale per persona.** `NTFY_TOPIC` accetta più topic separati da
+   virgola: ogni finestra viene notificata a tutti i canali, con dedup
+   indipendente (1 notifica per spot per giorno *per canale*). Così si revoca
+   il topic di una persona senza toccare gli altri:
+
+   ```powershell
+   gh secret set NTFY_TOPIC --body "topic-persona-1,topic-persona-2"
+   ```
+
+   Per revocare qualcuno: rigenera il *suo* topic, rimettilo nella lista al
+   posto del vecchio, e fagli risottoscrivere ntfy. Gli altri non si accorgono
+   di niente. Lo script non stampa mai i topic: nei log compaiono solo come
+   `#1`, `#2` nell'ordine della lista.
 
 4. **Smartphone**:
    - installa **ntfy** (Play Store / App Store) → ➕ → sottoscrivi il topic;
